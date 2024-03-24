@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use \App\Enums\RoleEnum;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -23,6 +25,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role_id',
     ];
 
     /**
@@ -35,14 +38,13 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+    protected function casts()
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'role_id' => RoleEnum::class
+        ];
+    }
 
     public function client(): HasOne
     {
@@ -52,5 +54,10 @@ class User extends Authenticatable
     public function seller(): HasOne
     {
         return $this->hasOne(Seller::class);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 }

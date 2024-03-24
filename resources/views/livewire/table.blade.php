@@ -7,6 +7,12 @@
                         <th scope="col" @class(["px-3 py-3.5 text-left text-sm font-semibold text-gray-900  dark:text-white"]) >{{ $column['label'] }}</th>
                     @endforeach
 
+                    @can('impersonate')
+                        <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
+                            <span class="sr-only">Impersonate</span>
+                        </th>
+                    @endcan
+
                     @if($edit)
                         <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-6">
                             <span class="sr-only">Edit</span>
@@ -27,6 +33,12 @@
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-white">{{ data_get($item, $column['column']) }}</td>
                     @endforeach
 
+                    @can('impersonate')
+                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-white">
+                            <a href="{{ route('impersonate', $item->user_id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-white dark:hover:text-gray-400">{{ __('Impersonate') }}</a>
+                        </td>
+                    @endcan
+
                     @if($edit)
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-white">
                             <a href="{{ route($edit, $item->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-white dark:hover:text-gray-400">{{ __('Edit') }}</a>
@@ -35,9 +47,9 @@
 
                     @if($delete)
                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 dark:text-white">
-
-                            {{ __('Delete') }}
-
+                            <a href="#" wire:click="$parent.destroy({{ $item }})">
+                                {{ __('Delete') }}
+                            </a>
                         </td>
                     @endif
                 </tr>

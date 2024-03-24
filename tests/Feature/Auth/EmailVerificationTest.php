@@ -1,13 +1,23 @@
 <?php
 
+use App\Enums\RoleEnum;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
+use Database\Seeders\RoleSeeder;
 use Illuminate\Auth\Events\Verified;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\URL;
 
+use function Pest\Laravel\seed;
+
+beforeEach(function() {
+    seed(RoleSeeder::class);
+});
+
 test('email verification screen can be rendered', function () {
-    $user = User::factory()->create([
+    $user = User::factory()
+        ->state(['role_id' => RoleEnum::ADMIN])
+        ->create([
         'email_verified_at' => null,
     ]);
 
@@ -17,8 +27,10 @@ test('email verification screen can be rendered', function () {
 });
 
 test('email can be verified', function () {
-    $user = User::factory()->create([
-        'email_verified_at' => null,
+    $user = User::factory()
+        ->state(['role_id' => RoleEnum::ADMIN])
+        ->create([
+            'email_verified_at' => null,
     ]);
 
     Event::fake();

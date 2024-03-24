@@ -23,6 +23,15 @@
             <div class="flex flex-col md:pl-64">
                 <x-navigation/>
 
+                @if(session()->has('impersonate'))
+                <div class="w-full flex items-center justify-center bg-indigo-600 py-2.5 gap-2">
+                    <span class="text-white text-sm">You are impersonating as <strong>{{ auth()->user()->name }}</strong>.</span>
+                    <a class="text-white text-sm underline" href="{{ route('impersonate.leaveImpersonate') }}">
+                        Leave impersonating
+                    </a>
+                </div>
+                @endif
+
                 <main class="flex-1">
                     <div class="py-6">
                         {{ $slot }}

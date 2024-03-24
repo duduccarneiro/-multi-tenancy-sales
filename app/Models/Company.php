@@ -19,4 +19,9 @@ class Company extends Model
     {
         return $this->hasMany(Seller::class);
     }
+
+    public function clients(): HasMany
+    {
+        return $this->hasMany(Client::class);
+    }
 }

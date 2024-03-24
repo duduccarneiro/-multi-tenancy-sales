@@ -1,9 +1,12 @@
 <?php
 
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ImpersonateController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SaleController;
 use App\Livewire\Dashboard;
+use App\Livewire\Seller\Edit;
+use App\Livewire\Seller\Index;
 use App\Models\SalesCommission;
 use Illuminate\Support\Facades\Route;
 use OpenAI\Laravel\Facades\OpenAI;
@@ -32,6 +35,13 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/clients', ClientController::class);
     Route::get('/sales', [SaleController::class, 'index']);
+
+    Route::get('/impersonate/{user_id}/login', [ImpersonateController::class, 'impersonate'])->middleware(['can:impersonate'])->name('impersonate');
+    Route::get('/impersonate/leaveImpersonate', [ImpersonateController::class, 'leaveImpersonate'])->middleware(['can:leave-impersonate'])->name('impersonate.leaveImpersonate');
 });
+
+Route::get('/sellers', Index::class)->middleware(['auth'])->name('sellers.index');
+Route::get('/sellers/create', Edit::class)->middleware(['auth'])->name('sellers.create');
+Route::get('/sellers/{seller}/Edit', Edit::class)->middleware(['auth'])->name('sellers.edit');
 
 require __DIR__.'/auth.php';
